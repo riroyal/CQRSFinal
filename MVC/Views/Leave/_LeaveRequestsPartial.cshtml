@@ -1,0 +1,21 @@
+﻿@model List<LeaveRequest>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leaveRequest in Model)
+        {
+            <tr>
+                <td>@leaveRequest.EmployeeName</td>
+                <td>@leaveRequest.StartDate.ToShortDateString()</td>
+                <td>@leaveRequest.EndDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

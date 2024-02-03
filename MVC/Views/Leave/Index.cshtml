@@ -1,0 +1,99 @@
+﻿@model LeaveRequestViewModel
+
+@if (Model.LeaveRequests.Count > 0)
+{
+    <h3>Leave Requests</h3>
+    @Html.Partial("_LeaveRequestsPartial", Model.LeaveRequests)
+}
+@* 
+<h3>Leave Request form</h3>
+@using (Html.BeginForm("SubmitLeaveRequest", "Leave", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.NewLeaveRequest.EmployeeName)
+        @Html.EditorFor(m => m.NewLeaveRequest.EmployeeName)
+        @Html.ValidationMessageFor(m => m.NewLeaveRequest.EmployeeName)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.NewLeaveRequest.StartDate)
+        @Html.EditorFor(m => m.NewLeaveRequest.StartDate)
+        @Html.ValidationMessageFor(m => m.NewLeaveRequest.StartDate)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.NewLeaveRequest.EndDate)
+        @Html.EditorFor(m => m.NewLeaveRequest.EndDate)
+        @Html.ValidationMessageFor(m => m.NewLeaveRequest.EndDate)
+    </div>
+
+    <!-- Add other form fields as needed -->
+
+    <button type="submit">Submit</button>
+} *@
+
+<h3>Submit New Leave Request</h3>
+<div id="form-container">
+    @using (Html.BeginForm("SubmitLeaveRequest2", "Leave", FormMethod.Post, new { id = "leaveForm" }))
+    {
+        <div>
+            @Html.LabelFor(m => m.NewLeaveRequest.EmployeeName)
+            @Html.EditorFor(m => m.NewLeaveRequest.EmployeeName)
+            @Html.ValidationMessageFor(m => m.NewLeaveRequest.EmployeeName)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.NewLeaveRequest.EmployeeEmail)
+            @Html.EditorFor(m => m.NewLeaveRequest.EmployeeEmail)
+            @Html.ValidationMessageFor(m => m.NewLeaveRequest.EmployeeEmail)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.NewLeaveRequest.StartDate)
+            @Html.EditorFor(m => m.NewLeaveRequest.StartDate)
+            @Html.ValidationMessageFor(m => m.NewLeaveRequest.StartDate)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.NewLeaveRequest.EndDate)
+            @Html.EditorFor(m => m.NewLeaveRequest.EndDate)
+            @Html.ValidationMessageFor(m => m.NewLeaveRequest.EndDate)
+        </div>
+
+        <!-- Add other form fields as needed -->
+
+        <button type="button" id="submitBtn">Submit</button>
+    }
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Handle form submission using AJAX -->
+<script>
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+            var form = $("#leaveForm");
+            $.ajax({
+                type: form.attr("method"),
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        // Update the list of submitted leave requests
+                        $("#form-container").load("/Leave/Index #form-container");
+
+                        // Clear the form fields
+                        form[0].reset();
+                    } else {
+                        // Handle validation errors
+                        alert("Validation Errors:\n" + response.errors.join("\n"));
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while processing the request.");
+                }
+            });
+        });
+    });
+</script>
